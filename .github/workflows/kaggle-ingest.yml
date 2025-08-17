@@ -1,5 +1,9 @@
 name: 🔄 Kaggle to ADLS Ingester
 
+on:
+  push:
+    branches:
+      - main
   # Trigger manual desde GitHub UI y desde API (ADF)
   workflow_dispatch:
     inputs:
