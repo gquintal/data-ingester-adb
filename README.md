@@ -170,19 +170,16 @@ El pipeline sigue una arquitectura medallion con las siguientes etapas:
 - **Ubicación**: `container/raw/`
 
 ### 🥉 Bronze Layer
-- **Formato**: Parquet
 - **Propósito**: Datos estructurados, sin transformaciones
 - **Procesamiento**: Conversión de formato, validación básica
 - **Ubicación**: `container/bronze/`
 
 ### 🥈 Silver Layer
-- **Formato**: Parquet optimizado
 - **Propósito**: Datos limpios y estandarizados
 - **Procesamiento**: Limpieza, deduplicación, tipado
 - **Ubicación**: `container/silver/`
 
 ### 🥇 Gold Layer
-- **Formato**: Parquet agregado
 - **Propósito**: Datos listos para análisis
 - **Procesamiento**: Agregaciones, métricas de negocio
 - **Ubicación**: `container/gold/`
