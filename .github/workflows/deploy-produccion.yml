@@ -25,13 +25,20 @@ jobs:
         for nb in "${NOTEBOOKS[@]}"; do
           echo "Exportando: $nb"
           
+          # URL encode the notebook path (replace spaces with %20)
+          encoded_nb=$(echo "$nb" | sed 's/ /%20/g')
+          full_path="$NOTEBOOK_BASE/$encoded_nb"
+          
+          echo "Path: $full_path"
+          
           curl -f -s -X GET \
             -H "Authorization: Bearer $ORIGIN_TOKEN" \
-            "$ORIGIN_HOST/api/2.0/workspace/export?path=$NOTEBOOK_BASE/$nb&format=SOURCE" \
+            "$ORIGIN_HOST/api/2.0/workspace/export?path=$full_path&format=SOURCE" \
             --output "notebooks/$nb.py"
             
           if [ ! -s "notebooks/$nb.py" ]; then
             echo "Error: Failed to export $nb"
+            echo "Full URL: $ORIGIN_HOST/api/2.0/workspace/export?path=$full_path&format=SOURCE"
             exit 1
           fi
           
