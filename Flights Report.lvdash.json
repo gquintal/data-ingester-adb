@@ -1,0 +1,149 @@
+{
+  "datasets": [
+    {
+      "name": "cbf14860",
+      "displayName": "dim_airlines",
+      "queryLines": [
+        "SELECT * FROM curso_smartdata.gold.dim_airlines"
+      ]
+    },
+    {
+      "name": "4d4e02e0",
+      "displayName": "dim_routes",
+      "queryLines": [
+        "SELECT * FROM curso_smartdata.gold.dim_routes"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "34052325",
+      "displayName": "Reportes",
+      "layout": [
+        {
+          "widget": {
+            "name": "dd5452dc",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "cbf14860",
+                  "fields": [
+                    {
+                      "name": "airline",
+                      "expression": "`airline`"
+                    },
+                    {
+                      "name": "sum(total_flights)",
+                      "expression": "SUM(`total_flights`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "airline",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  },
+                  "displayName": "airline"
+                },
+                "y": {
+                  "fieldName": "sum(total_flights)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Sum of total_flights"
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "title": "Total Flights by Airline",
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "d09a4fe8",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "4d4e02e0",
+                  "fields": [
+                    {
+                      "name": "sum(total_flights)",
+                      "expression": "SUM(`total_flights`)"
+                    },
+                    {
+                      "name": "route_id",
+                      "expression": "`route_id`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "sum(total_flights)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Sum of total_flights"
+                },
+                "color": {
+                  "fieldName": "route_id",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "route_id"
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "title": "Total Flights by Route",
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 6,
+            "width": 3,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    }
+  }
+}

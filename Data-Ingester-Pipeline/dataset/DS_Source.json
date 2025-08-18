@@ -1,0 +1,67 @@
+{
+    "name": "DS_Source",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "LS_ADLS",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "DelimitedText",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileSystem": "raw"
+            },
+            "columnDelimiter": ",",
+            "escapeChar": "\\",
+            "firstRowAsHeader": true,
+            "quoteChar": "\""
+        },
+        "schema": [
+            {
+                "name": "Airline",
+                "type": "String"
+            },
+            {
+                "name": "Date_of_Journey",
+                "type": "String"
+            },
+            {
+                "name": "Source",
+                "type": "String"
+            },
+            {
+                "name": "Destination",
+                "type": "String"
+            },
+            {
+                "name": "Route",
+                "type": "String"
+            },
+            {
+                "name": "Dep_Time",
+                "type": "String"
+            },
+            {
+                "name": "Arrival_Time",
+                "type": "String"
+            },
+            {
+                "name": "Duration",
+                "type": "String"
+            },
+            {
+                "name": "Total_Stops",
+                "type": "String"
+            },
+            {
+                "name": "Additional_Info",
+                "type": "String"
+            },
+            {
+                "name": "Price",
+                "type": "String"
+            }
+        ]
+    }
+}
