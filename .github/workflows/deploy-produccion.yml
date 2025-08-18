@@ -1,71 +1,86 @@
 name: 🔄 Databricks Notebook Deploy
 
 on:
-  #push:
-    #branches:
-      #- main
-    
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Install jq & curl
-      run: sudo apt-get update && sudo apt-get install -y jq curl
-
-    - name: Export multiple notebooks (raw)
+    - name: Export notebooks from Origin
       run: |
-        ORIGIN_HOST=${{ secrets.DATABRICKS_ORIGIN_HOST }}
-        ORIGIN_TOKEN=${{ secrets.DATABRICKS_ORIGIN_TOKEN }}
-        NOTEBOOK_BASE=${{ secrets.NOTEBOOK_BASE }}
-        NOTEBOOKS=("extraction to bronze" "transform to silver" "load to gold")  # Agrega más según necesitesas
-
+        set -e
+        
+        ORIGIN_HOST="${{ secrets.DATABRICKS_ORIGIN_HOST }}"
+        ORIGIN_TOKEN="${{ secrets.DATABRICKS_ORIGIN_TOKEN }}"
+        NOTEBOOK_BASE="${{ secrets.NOTEBOOK_BASE }}"
+        NOTEBOOKS=("extraction to bronze" "transform to silver" "load to gold")
+        
         mkdir -p notebooks
-
+        
         for nb in "${NOTEBOOKS[@]}"; do
-          echo "Exportando $nb en modo raw..."
-          curl -s -X GET \
+          echo "Exportando: $nb"
+          
+          curl -f -s -X GET \
             -H "Authorization: Bearer $ORIGIN_TOKEN" \
-            "$ORIGIN_HOST/api/2.0/workspace/export?path=$NOTEBOOK_BASE/$nb&format=SOURCE&direct_download=true" \
+            "$ORIGIN_HOST/api/2.0/workspace/export?path=$NOTEBOOK_BASE/$nb&format=SOURCE" \
             --output "notebooks/$nb.py"
+            
+          if [ ! -s "notebooks/$nb.py" ]; then
+            echo "Error: Failed to export $nb"
+            exit 1
+          fi
+          
+          echo "✅ Exported: $nb"
         done
 
-    - name: Deploy notebooks to Destination Workspace
+    - name: Deploy notebooks to Destination
       run: |
-        DEST_HOST=${{ secrets.DATABRICKS_DEST_HOST }}
-        DEST_TOKEN=${{ secrets.DATABRICKS_DEST_TOKEN }}
-        DEST_BASE=${{ secrets.DEST_BASE }}
-
+        set -e
+        
+        DEST_HOST="${{ secrets.DATABRICKS_DEST_HOST }}"
+        DEST_TOKEN="${{ secrets.DATABRICKS_DEST_TOKEN }}"
+        DEST_BASE="${{ secrets.DEST_BASE }}"
+        
+        # Create destination directory
+        curl -s -X POST \
+          -H "Authorization: Bearer $DEST_TOKEN" \
+          -H "Content-Type: application/json" \
+          -d "{\"path\":\"$DEST_BASE\"}" \
+          "$DEST_HOST/api/2.0/workspace/mkdirs"
+        
+        # Deploy each notebook
         for file in notebooks/*.py; do
           name=$(basename "$file" .py)
           dest_path="$DEST_BASE/$name"
-
-          echo "Creando carpeta $DEST_BASE si no existe..."
-          curl -s -X POST \
+          
+          echo "Deploying: $name"
+          
+          response=$(curl -s -w "%{http_code}" -X POST \
             -H "Authorization: Bearer $DEST_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d "{\"path\":\"$DEST_BASE\"}" \
-            "$DEST_HOST/api/2.0/workspace/mkdirs"
-
-          echo "Importando $file → $dest_path"
-          curl -s -X POST \
-            -H "Authorization: Bearer $DEST_TOKEN" \
-            -H "Content-Type: multipart/form-data" \
             -F "path=$dest_path" \
             -F "format=SOURCE" \
             -F "language=PYTHON" \
             -F "overwrite=true" \
             -F "content=@$file" \
-            "$DEST_HOST/api/2.0/workspace/import"
+            "$DEST_HOST/api/2.0/workspace/import")
+          
+          http_code=$(echo "$response" | tail -c 4)
+          
+          if [ "$http_code" != "200" ]; then
+            echo "Error: Failed to deploy $name (HTTP $http_code)"
+            exit 1
+          fi
+          
+          echo "✅ Deployed: $name"
         done
+        
+        echo "🎉 All notebooks deployed successfully!"
 
     - name: Clean up
+      if: always()
       run: rm -rf notebooks
-
-    - name: Done
-      run: echo "All notebooks deployed with raw content!"
