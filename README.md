@@ -80,6 +80,13 @@ Notebooks de PySpark y SQL para procesamiento de datos:
 - **Seguridad**: DDLs y gestión de permisos
 - **Rollback**: Scripts de limpieza y recuperación
 
+### 5. Dashboard de Reportes (`Flights Report.*`)
+Dashboard/Reporte generado en Databricks:
+- **JSON**: Configuración del dashboard de Databricks
+- **PDF**: Reporte exportado con visualizaciones y métricas
+- **Contenido**: Análisis de datos de vuelos, KPIs de aerolíneas y rutas
+- **Propósito**: Presentación ejecutiva de resultados y insights
+
 ## ⚙️ Configuración
 
 ### Prerrequisitos
@@ -289,7 +296,8 @@ data-ingester-adb/
 │       └── DDLs.sql                  # Database schemas and permissions
 ├── .gitignore                     # Git ignore patterns
 ├── README.md                      # Este archivo
-└── Flights Report.lvdash.json     # Dashboard configuration
+├── Flights Report.lvdash.json     # Databricks Dashboard configuration
+└── Flights Report.pdf             # Dashboard report (exported)
 ```
 
 ## 🔄 Flujo de Trabajo
