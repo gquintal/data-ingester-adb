@@ -337,7 +337,7 @@ Este proyecto está bajo la licencia MIT. Ver `LICENSE` para más detalles.
 
 **Guadalupe Quintal V**
 - GitHub: [@gquintal](https://github.com/gquintal)
-- LinkedIn: [Guadalupe Quintal](https://linkedin.com/in/guadalupe-quintal)
+- LinkedIn: [Guadalupe Quintal](https://www.linkedin.com/in/gquintal09/)
 
 ---
 
