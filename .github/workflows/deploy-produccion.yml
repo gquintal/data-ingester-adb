@@ -1,4 +1,4 @@
-name: Dynamic Databricks Notebook Deploy
+name: 🔄 Databricks Notebook Deploy
 
 on:
   #push:
