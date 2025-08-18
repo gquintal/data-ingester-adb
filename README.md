@@ -24,20 +24,8 @@ Sistema completo de ingesta y transformación de datos que automatiza la extracc
 
 Este proyecto implementa una arquitectura moderna de ingesta de datos con los siguientes componentes:
 
-```mermaid
-graph TB
-    A[Kaggle Dataset] --> B[GitHub Actions]
-    B --> C[Azure Key Vault]
-    B --> D[Azure Data Lake Storage - Raw]
-    E[Azure Data Factory] --> F[ADLS - Bronze]
-    D --> F
-    F --> G[ADLS - Silver]
-    G --> H[ADLS - Gold]
-    I[Databricks] --> F
-    I --> G
-    I --> H
-    E --> I
-```
+## Diagrama
+![Diagrama](./img/Diagrama.png)
 
 ## ✨ Características
 
@@ -310,9 +298,6 @@ data-ingester-adb/
 6. **Transform**: ADF convierte CSV a Parquet (Bronze)
 7. **Process**: Databricks notebooks procesan Silver y Gold
 8. **Cleanup**: Elimina archivos temporales
-
-## Diagrama
-![Diagrama](./img/Diagrama.png)
 
 ## 🛠️ Troubleshooting
 
