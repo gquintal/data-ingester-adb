@@ -55,7 +55,7 @@
                     },
                     "url": "https://api.github.com/repos/gquintal/data-ingester-adb/actions/workflows/kaggle-ingest.yml/dispatches",
                     "body": {
-                        "ref": "develop",
+                        "ref": "main",
                         "inputs": {
                             "dataset": "@{pipeline().parameters.dataset}",
                             "container_name": "@{pipeline().parameters.container_name}"
@@ -195,7 +195,10 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "notebookPath": "/Repos/certificaciones@lattevida.onmicrosoft.com/data-ingester-adb/transformation/proceso/extraction to bronze"
+                    "notebookPath": {
+                        "value": "@concat(pipeline().globalParameters.notebook_base_path, 'extraction to bronze')",
+                        "type": "Expression"
+                    }
                 },
                 "linkedServiceName": {
                     "referenceName": "LS_Databricks",
@@ -222,7 +225,10 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "notebookPath": "/Repos/certificaciones@lattevida.onmicrosoft.com/data-ingester-adb/transformation/proceso/transform to silver"
+                    "notebookPath": {
+                        "value": "@concat(pipeline().globalParameters.notebook_base_path, 'transform to silver')",
+                        "type": "Expression"
+                    }
                 },
                 "linkedServiceName": {
                     "referenceName": "LS_Databricks",
@@ -249,7 +255,10 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "notebookPath": "/Repos/certificaciones@lattevida.onmicrosoft.com/data-ingester-adb/transformation/proceso/load to gold"
+                    "notebookPath": {
+                        "value": "@concat(pipeline().globalParameters.notebook_base_path, 'load to gold')",
+                        "type": "Expression"
+                    }
                 },
                 "linkedServiceName": {
                     "referenceName": "LS_Databricks",
