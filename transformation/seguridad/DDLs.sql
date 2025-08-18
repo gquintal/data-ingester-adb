@@ -91,3 +91,20 @@ CREATE OR REPLACE TABLE curso_smartdata.gold.dim_routes (
 )
 USING DELTA
 LOCATION 'abfss://gold@adlscursosmartdata.dfs.core.windows.net/dim_routes';
+
+-- COMMAND ----------
+
+GRANT USE CATALOG ON CATALOG curso_smartdata TO `developers`;
+
+-- COMMAND ----------
+
+GRANT USE SCHEMA ON SCHEMA curso_smartdata.bronze TO `developers`;
+GRANT USE SCHEMA ON SCHEMA curso_smartdata.silver TO `developers`;
+GRANT USE SCHEMA ON SCHEMA curso_smartdata.gold TO `developers`;
+
+-- COMMAND ----------
+
+GRANT SELECT ON TABLE curso_smartdata.bronze.flights TO `developers`;
+GRANT SELECT ON TABLE curso_smartdata.silver.flights TO `developers`;
+GRANT SELECT ON TABLE curso_smartdata.gold.dim_airlines TO `developers`;
+GRANT SELECT ON TABLE curso_smartdata.gold.dim_routes TO `developers`;
