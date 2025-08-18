@@ -311,6 +311,9 @@ data-ingester-adb/
 7. **Process**: Databricks notebooks procesan Silver y Gold
 8. **Cleanup**: Elimina archivos temporales
 
+## Diagrama
+![Diagrama](./img/Diagrama.png)
+
 ## 🛠️ Troubleshooting
 
 ### Errores Comunes
